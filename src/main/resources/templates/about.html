@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html ng-app="todo">
+<head>
+    <title>ZHAW Web Engineering TODO App</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">TODO List</a>
+        </div>
+
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="/">Issues</a></li>
+                <li class="active"><a href="#">About</a></li>
+                <li><a href="contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>About this application</strong>
+                </div>
+
+                <div class="panel-body">
+                    <p>
+                        This is a Spring-Boot &amp; AngularJS application for the ZHAW module "Web Engineering". It
+                        allows the user to manage his tasks for different project while making use of localStorage and a
+                        REST API that was provided by ZHAW.
+                    </p>
+
+                    <p>
+                        Also see <a href="https://github.com/ahatius/zhaw-weng-todo">zhaw-weng-todo on Github</a> to
+                        learn more about this project.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+</html>
