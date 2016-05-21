@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html ng-app="todo">
+<head>
+    <title>ZHAW Web Engineering TODO App</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.0/css/bootstrap-datepicker.min.css"
+          rel="stylesheet"/>
+    <link href="/css/angular-ui-notification.min.css" rel="stylesheet"/>
+
+    <style type="text/css">
+        .urgent {
+            background-color: #ebccd1;
+        }
+
+        .normal {
+            background-color: #f9f2e9;
+        }
+
+        .low {
+            background-color: #e7f6ec;
+        }
+
+        .done {
+            background-color: #f0f0f0;
+        }
+
+        .strike {
+            text-decoration: line-through;
+            color: #b3b3cc;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                    aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span> <span
+                    class="icon-bar"></span> <span class="icon-bar"></span> <span
+                    class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">TODO List</a>
+        </div>
+
+        <div class="collapse navbar-collapse"
+             id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Issues</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                       aria-expanded="false">Project <span class="caret"></span></a>
+                    <ul class="dropdown-menu" ng-controller="ProjectController as projectCtrl">
+                        <li ng-repeat="project in projectCtrl.projects track by project.id" x-project-id="project.id">
+                            <a href="#" ng-click="projectCtrl.selectProject(project)">{{ project.title }}</a>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#" ng-click="projectCtrl.addProject()">Add project</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+
+    </nav>
+
+    <div ng-controller="IssueController as issueCtrl">
+        <div ng-hide="issueCtrl.project">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Please select an existing project or create a new one.</h3>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="issueCtrl.project">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Projekt {{ issueCtrl.project.title }} ({{ issueCtrl.project.id }})</h2>
+                </div>
+            </div>
+
+            <br/>
+
+            <div class="row">
+                <form name="issueCreation" novalidate="">
+                    <div class="col-md-1 col-xs-2">
+                        <div class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button"
+                                    id="priorityMenu" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="true">
+                                Priority {{ issueCtrl.issue.priority }} <span class="caret"></span>
+                            </button>
+
+                            <ul class="dropdown-menu" aria-labelledby="priorityMenu">
+                                <li><a href="#" ng-click="issueCtrl.updatePriority('1')">1</a></li>
+                                <li><a href="#" ng-click="issueCtrl.updatePriority('2')">2</a></li>
+                                <li><a href="#" ng-click="issueCtrl.updatePriority('3')">3</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2 col-xs-2">
+                        <p class="input-group" show-errors="">
+                            <input type="text" class="form-control" uib-datepicker-popup="dd.MM.yyyy"
+                                   ng-model="issueCtrl.issue.due_date" name="due_date"
+                                   is-open="issueCtrl.datepickerOpen"
+                                   datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="issueCtrl.openDatepicker()"><i
+                    class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+                        </p>
+                    </div>
+
+                    <div class="col-md-7 col-xs-6">
+                        <div class="form-group" show-errors="">
+                            <input type="text" class="form-control" name="description"
+                                   placeholder="Enter Task description here"
+                                   ng-model="issueCtrl.issue.title" ng-required="true"/>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-2 col-xs-2">
+                        <button class="btn btn-default btn-block" ng-click="issueCtrl.addIssue()">Create
+                            Task
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+            <br/>
+
+            <div class="row" ng-repeat="issue in issueCtrl.issues"
+                 ng-class="{urgent: issue.priority==1, normal: issue.priority==2, low: issue.priority==3, done: issue.done}">
+                <div class="col-md-10">
+                    <div class="checkbox">
+                        <label ng-class="{strike: issue.done}">
+                            <input type="checkbox" ng-model="issue.done" ng-click="issueCtrl.updateIssue(issue)"/>
+                            {{issue.title}}
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <span ng-class="{strike: issue.done}">
+                    {{issue.due_date | date:'dd.MM.yyyy'}}
+                    </span>
+
+                    &nbsp;
+
+                    <div class="btn-group" style="padding-top: 3px;">
+                        <button class="btn btn-danger" ng-click="issueCtrl.removeIssue(issue)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Angular -->
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-resource.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.3.2/ui-bootstrap-tpls.min.js"></script>
+<script src="/js/uuid.service.min.js"></script>
+<script src="/js/angular-ui-notification.min.js"></script>
+<script src="/js/showErrors.min.js"></script>
+
+
+<!-- Todo -->
+<script src="/js/app.js"></script>
+<script src="/js/project.controller.js"></script>
+<script src="/js/project.service.js"></script>
+<script src="/js/project-selection.service.js"></script>
+<script src="/js/issue.controller.js"></script>
+<script src="/js/issue.service.js"></script>
+<script src="/js/localStorage.service.js"></script>
+<script src="/js/synchronization.service.js"></script>
+</body>
+</html>
