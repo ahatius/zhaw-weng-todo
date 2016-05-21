@@ -27,7 +27,7 @@
 
             var lastProject = localStorageService.get('lastProject');
 
-            if (lastProject != undefined && vm.projects > 0) {
+            if (lastProject != undefined && vm.projects.length > 0) {
                 projectSelectionService.selectProject(lastProject);
             }
         }
