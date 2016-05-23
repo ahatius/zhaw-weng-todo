@@ -39,6 +39,10 @@
             var message = "Bitte gib einen Titel für das Projekt an:";
             var title = prompt(message);
 
+            if (title == null) {
+                return;
+            }
+
             var project = new Project();
             project.title = title;
 
