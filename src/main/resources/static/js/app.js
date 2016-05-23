@@ -9,7 +9,8 @@
         'uuid',
         'ui.bootstrap',
         'ui-notification',
-        'ui.bootstrap.showErrors'
+        'ui.bootstrap.showErrors',
+        'angular-loading-bar'
     ];
 
 
